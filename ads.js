@@ -2,7 +2,6 @@ var init = function () {
     if (!$) {
         window.$ = window.jQuery;
     }
-    $('body').append('<iframe id="ads" height=0 width=0 />');
 };
 
 var triggerEvent = function (dom, type) {
@@ -37,11 +36,8 @@ var findAds = function (width, height) {
 };
 
 var openAds = function (href) {
-    var $iframe = $('iframe#ads');
-    if ($iframe.length < 1) {
-        $('body').append('<iframe id="ads" height=0 width=0 />');
-        $iframe = $('iframe#ads');
-    }
+    var $iframe = $('<iframe height=0 width=0 />');
+    $('body').append($iframe);
     $iframe.get(0).src = href;
 };
 
