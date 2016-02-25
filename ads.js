@@ -52,7 +52,7 @@ var autoOpenAds = function (width, height) {
         return false;
     }
 
-    if (isNotUrl($a.attr('href'))) {
+    if (!isNotUrl($a.attr('href'))) {
         openAds($a.attr('href'));
     } else {
         var wOpen = window.open;
