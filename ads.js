@@ -16,7 +16,10 @@ var triggerEvent = function (dom, type) {
     dom.dispatchEvent(evt);
 };
 
-var isUrl =  function (strUrl) {// 验证url
+var isUrl =  function (strUrl) {
+    if (!strUrl) {
+        return false;
+    }
     var strRegex = "^((https|http|ftp|rtsp|mms)?://)"
         + "?(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?" // ftp的user@
         + "(([0-9]{1,3}\.){3}[0-9]{1,3}" // IP形式的URL- 199.194.52.184
