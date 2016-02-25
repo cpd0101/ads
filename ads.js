@@ -16,6 +16,19 @@ var triggerEvent = function (dom, type) {
     dom.dispatchEvent(evt);
 };
 
+var isUrl =  function (strUrl) {// 验证url
+    var strRegex = "^((https|http|ftp|rtsp|mms)?://)"
+        + "?(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?" // ftp的user@
+        + "(([0-9]{1,3}\.){3}[0-9]{1,3}" // IP形式的URL- 199.194.52.184
+        + "|" // 允许IP和DOMAIN（域名）
+        + "([0-9a-z_!~*'()-]+\.)*" // 域名- www.
+        + "([0-9a-z][0-9a-z-]{0,61})?[0-9a-z]\." // 二级域名
+        + "[a-z]{2,6})" // first level domain- .com or .museum
+        + "(:[0-9]{1,4})?"; // 端口- :80
+    var re = new RegExp(strRegex);
+    return re.test(strUrl);
+};
+
 var findAds = function (width, height) {
     var $img = $('img,iframe,embed,object').filter(function (index, item) {
         return $(item).width() == width && $(item).height() == height;
@@ -45,7 +58,7 @@ var autoOpenAds = function (width, height) {
         return false;
     }
 
-    if ($a.attr('href')) {
+    if (isUrl($a.attr('href'))) {
         openAds($a.attr('href'));
     } else {
         var wOpen = window.open;
