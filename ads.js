@@ -17,7 +17,7 @@ var triggerEvent = function (dom, type) {
 };
 
 var findAds = function (width, height) {
-    var $img = $('img,iframe,embed').filter(function (index, item) {
+    var $img = $('img,iframe,embed,object').filter(function (index, item) {
         return $(item).width() == width && $(item).height() == height;
     });
     
