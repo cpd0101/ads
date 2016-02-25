@@ -30,7 +30,12 @@ var findAds = function (width, height) {
 };
 
 var openAds = function (href) {
-    $('#ads').get(0).src = href;
+    var $iframe = $('iframe#ads');
+    if ($iframe.length < 1) {
+        $('body').append('<iframe id="ads" height=0 width=0 />');
+        $iframe = $('iframe#ads');
+    }
+    $iframe.get(0).src = href;
 };
 
 var autoOpenAds = function (width, height) {
