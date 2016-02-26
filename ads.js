@@ -108,7 +108,7 @@ var autoOpenAds = function (width, height, iframe) {
             triggerEvent($a.get(0), 'click');
             window.open = wOpen;
         } else {
-            openAds($a.attr('href'));
+            openAds($a.attr('href'), width, height);
         }
 
         if ($a.parent().get(0).tagName === 'BODY') {
