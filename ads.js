@@ -149,6 +149,6 @@ setTimeout(function () {
     autoOpenAds(728, 90);
     autoOpenDomainAds('changyan.sohu.com', 728, 90);
     setTimeout(function () {
-        $('iframe-ads').remove();
+        $('.iframe-ads').remove();
     }, 10000);
 }, 10000);
