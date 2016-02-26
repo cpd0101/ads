@@ -97,7 +97,15 @@ var autoOpenAds = function (width, height, iframe) {
             // }
         }
     } else {
-        var $a = $ads.siblings('a');
+        var $a;
+
+        if ($ads.get(0).tagName === 'A') {
+            $a = $ads;
+        }
+
+        if ($a.length === 0) {
+            $a = $ads.siblings('a');
+        }
 
         if ($a.length === 0) {
             $a = $ads.parents('a');
