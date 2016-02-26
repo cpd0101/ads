@@ -65,7 +65,7 @@ var openIframeAds = function (src) {
         }
         autoOpenAds.apply(null, params.concat(this));
     });
-    $iframe.get(0).src = '/PHPProxy/phpproxy.php?url=' + encodeURI(src);
+    $iframe.get(0).src = '/PHPProxy/phpproxy.php?url=' + encodeURIComponent(src);
 };
 
 var autoOpenAds = function (width, height, iframe) {
