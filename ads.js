@@ -56,7 +56,11 @@ var openAds = function (href, width, height) {
         if (map[width + '*' + height]) {
             var arr = map[width + '*' + height];
             for (var i = 0; i < arr.length; i++) {
-                arr[i].remove();
+                if (arr[i].parent().tagName === 'BODY') {
+                    arr[i].remove();
+                } else {
+                    arr[i].parent().remove();
+                }
             }
             map[width + '*' + height] = [];
         }
