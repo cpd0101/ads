@@ -134,19 +134,7 @@ var autoOpenDomainAds = function (domain, width, height, iframe) {
 };
 
 setTimeout(function () {
-    if (!autoOpenAds(300, 250)) {
-        setTimeout(arguments.callee, 1000);
-    }
-}, 1000);
-
-setTimeout(function () {
-    if (!autoOpenAds(728, 90)) {
-        setTimeout(arguments.callee, 1000);
-    }
-}, 1000);
-
-// setTimeout(function () {
-//     if (!autoOpenDomainAds('changyan.sohu.com', 728, 90)) {
-//         setTimeout(arguments.callee, 1000);
-//     }
-// }, 1000);
+    autoOpenAds(300, 250);
+    autoOpenAds(728, 90);
+    // autoOpenDomainAds('changyan.sohu.com', 728, 90);
+}, 10000);
