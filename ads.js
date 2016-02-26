@@ -49,14 +49,14 @@ var openAds = function (href, width, height) {
     var $iframe = $('<iframe height=0 width=0 />');
     $('body').append($iframe);
     $iframe.on('load', function (e) {
-        $('.iframe-ads-' + width + '*' + height).remove();
+        $('.iframe-ads-' + width + '-' + height).remove();
         $(this).remove();
     });
     $iframe.get(0).src = href;
 };
 
 var openIframeAds = function (src, width, height) {
-    var $iframe = $('<iframe class="' + 'iframe-ads-' + width + '*' + height + '" height=0 width=0 />');
+    var $iframe = $('<iframe class="' + 'iframe-ads-' + width + '-' + height + '" height=0 width=0 />');
     $('body').append($iframe);
     $iframe.on('load', function (e) {
         autoOpenAds(width, height, this);
