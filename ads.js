@@ -29,7 +29,7 @@ var findAdsWithSize = function (width, height, iframe) {
     if (iframe) {
         $dom = $(iframe).contents();
     }
-    return $dom.find('img,embed,iframe,object').filter(function (index, item) {
+    return $dom.find('img,embed,object').filter(function (index, item) {
         return $(item).width() == width && $(item).height() == height;
     });
 };
