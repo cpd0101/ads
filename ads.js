@@ -39,7 +39,7 @@ var findAdsWithDomain = function (domain, iframe) {
     if (iframe) {
         $dom = $(iframe).contents();
     }
-    return $dom.find('embed,iframe').filter(function (index, item) {
+    return $dom.find('iframe').filter(function (index, item) {
         var src = $(item).attr('src');
         return src && src.indexOf(domain) > -1 && src.indexOf(domain) < 9;
     });
@@ -81,11 +81,11 @@ var autoOpenAds = function (width, height, iframe) {
             autoOpenAds(width, height, $ads.get(0));
         } else {
             openIframeAds(src, width, height);
-            if ($ads.parent().get(0).tagName === 'BODY') {
-                $ads.remove();
-            } else {
-                $ads.parent().remove();
-            }
+            // if ($ads.parent().get(0).tagName === 'BODY') {
+            //     $ads.remove();
+            // } else {
+            //     $ads.parent().remove();
+            // }
         }
     } else {
         var $a = $img.siblings('a');
@@ -102,12 +102,33 @@ var autoOpenAds = function (width, height, iframe) {
             openAds($a.attr('href'));
         }
 
-        if ($a.parent().get(0).tagName === 'BODY') {
-            $a.remove();
-        } else {
-            $a.parent().remove();
-        }
+        // if ($a.parent().get(0).tagName === 'BODY') {
+        //     $a.remove();
+        // } else {
+        //     $a.parent().remove();
+        // }
     }
+
+    return true;
+};
+
+var autoOpenDomainAds = function (domain, width, height, iframe) {
+    var $ads = findAdsWithDomain(domain, iframe);
+
+    if ($ads.length < 1) {
+        return false;
+    }
+
+    $ads.each(function (index, item) {
+        var $item = $(item);
+        var src = $(item).attr('src');
+        openIframeAds(src, width, height);
+        // if ($item.parent().get(0).tagName === 'BODY') {
+        //     $item.remove();
+        // } else {
+        //     $item.parent().remove();
+        // }
+    });
 
     return true;
 };
@@ -120,6 +141,12 @@ var autoOpenAds = function (width, height, iframe) {
 
 // setTimeout(function () {
 //     if (!autoOpenAds(728, 90)) {
+//         setTimeout(arguments.callee, 1000);
+//     }
+// }, 1000);
+
+// setTimeout(function () {
+//     if (!autoOpenDomainAds('changyan.sohu.com')) {
 //         setTimeout(arguments.callee, 1000);
 //     }
 // }, 1000);
