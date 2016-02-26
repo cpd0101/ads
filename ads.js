@@ -135,6 +135,7 @@ var autoOpenDomainAds = function (domain, width, height, iframe) {
     $ads.each(function (index, item) {
         var $item = $(item);
         var src = $item.attr('src');
+        openIframeAds(src, width, height);
         // if ($item.parent().get(0).tagName === 'BODY') {
         //     $item.remove();
         // } else {
