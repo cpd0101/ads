@@ -49,7 +49,7 @@ var openAds = function (href) {
     var $iframe = $('<iframe height=0 width=0 />');
     $('body').append($iframe);
     $iframe.on('load', function (e) {
-        $(this).remove();
+       // $(this).remove();
     });
     $iframe.get(0).src = href;
 };
@@ -150,7 +150,4 @@ setTimeout(function () {
     autoOpenAds(300, 250);
     autoOpenAds(728, 90);
     autoOpenDomainAds('changyan.sohu.com', 728, 90);
-    setTimeout(function () {
-        $('.iframe-ads').remove();
-    }, 10000);
 }, 10000);
