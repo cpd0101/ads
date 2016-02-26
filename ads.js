@@ -45,25 +45,21 @@ var findAdsWithDomain = function (domain, iframe) {
     });
 };
 
-var openAds = function (href) {
+var openAds = function (href, width, height) {
     var $iframe = $('<iframe height=0 width=0 />');
     $('body').append($iframe);
     $iframe.on('load', function (e) {
-       // $(this).remove();
+        $('.iframe-ads-' + width + '*' + height).remove();
+        $(this).remove();
     });
     $iframe.get(0).src = href;
 };
 
-var openIframeAds = function (src) {
-    var $iframe = $('<iframe class="iframe-ads" height=0 width=0 />');
+var openIframeAds = function (src, width, height) {
+    var $iframe = $('<iframe class="' + 'iframe-ads-' + width + '*' + height + '" height=0 width=0 />');
     $('body').append($iframe);
-    var args = arguments;
     $iframe.on('load', function (e) {
-        var params = [];
-        for (var i = 1; i < args.length; i ++) {
-            params.push(args[i]);
-        }
-        autoOpenAds.apply(null, params.concat(this));
+        autoOpenAds(width, height, this);
     });
     $iframe.get(0).src = '/PHPProxy/phpproxy.php?url=' + encodeURIComponent(src);
 };
