@@ -46,12 +46,7 @@ var findAdsWithDomain = function (domain, width, height, iframe) {
     });
 };
 
-var lastIframe = null;
-
 var openAds = function (href) {
-    if (lastIframe) {
-        $(lastIframe).remove();
-    }
     var $iframe = $('<iframe height=0 width=0 />');
     $('body').append($iframe);
     $iframe.on('load', function (e) {
@@ -61,13 +56,9 @@ var openAds = function (href) {
 };
 
 var openIframeAds = function (src) {
-    if (lastIframe) {
-        $(lastIframe).remove();
-    }
-    var $iframe = $('<iframe height=0 width=0 />');
+    var $iframe = $('<iframe class="iframe-ads" height=0 width=0 />');
     $('body').append($iframe);
     var args = arguments;
-    lastIframe = $iframe.get(0);
     $iframe.on('load', function (e) {
         var params = [];
         for (var i = 1; i < args.length; i ++) {
@@ -158,8 +149,6 @@ setTimeout(function () {
     autoOpenAds(728, 90);
     autoOpenDomainAds('changyan.sohu.com', 728, 90);
     setTimeout(function () {
-        if (lastIframe) {
-            $(lastIframe).remove();
-        }
+        $('iframe-ads').remove();
     }, 10000);
 }, 10000);
