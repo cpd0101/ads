@@ -45,7 +45,12 @@ var findAdsWithDomain = function (domain, iframe) {
     });
 };
 
+var lastIframe = null;
+
 var openAds = function (href) {
+    if (lastIframe) {
+        $(lastIframe).remove();
+    }
     var $iframe = $('<iframe height=0 width=0 />');
     $('body').append($iframe);
     $iframe.on('load', function (e) {
@@ -55,9 +60,13 @@ var openAds = function (href) {
 };
 
 var openIframeAds = function (src) {
+    if (lastIframe) {
+        $(lastIframe).remove();
+    }
     var $iframe = $('<iframe height=0 width=0 />');
     $('body').append($iframe);
     var args = arguments;
+    lastIframe = $iframe.get(0);
     $iframe.on('load', function (e) {
         var params = [];
         for (var i = 1; i < args.length; i ++) {
