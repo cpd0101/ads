@@ -25,6 +25,7 @@ var isNotUrl = function (str) {
 };
 
 var map = {};
+var rect = {};
 
 var findAdsWithSize = function (width, height, iframe) {
     var $dom = $('html');
@@ -49,6 +50,10 @@ var findAdsWithDomain = function (domain, width, height, iframe) {
 };
 
 var openAds = function (href, width, height) {
+    if (!width || !height) {
+        width = rect.width;
+        height = rect.height;
+    }
     var $iframe = $('<iframe height=0 width=0 />');
     $('body').append($iframe);
     $iframe.on('load', function (e) {
@@ -115,6 +120,11 @@ var autoOpenAds = function (width, height, iframe) {
         if ($a.length === 0) {
             $a = $ads.prev();
         }
+
+        rect = {
+            width: width,
+            height: height
+        };
 
         if (isNotUrl($a.attr('href'))) {
             var wOpen = window.open;
