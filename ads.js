@@ -23,7 +23,7 @@ var isNotUrl = function (str) {
 };
 
 var findAds = function (width, height) {
-    var $img = $('img,iframe,embed,object').filter(function (index, item) {
+    var $img = $('img,embed,object').filter(function (index, item) {
         return $(item).width() == width && $(item).height() == height;
     });
     
