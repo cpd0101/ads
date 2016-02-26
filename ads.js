@@ -24,20 +24,22 @@ var isNotUrl = function (str) {
     return false;
 };
 
-var findAdsWithSize = function (width, height, context) {
-    if (!context) {
-        context = $('html');
+var findAdsWithSize = function (width, height, iframe) {
+    var $dom = $('html');
+    if (iframe) {
+        $dom = $(iframe).contents();
     }
-    return context.find('img,embed,iframe,object').filter(function (index, item) {
+    return $dom.find('img,embed,iframe,object').filter(function (index, item) {
         return $(item).width() == width && $(item).height() == height;
     });
 };
 
-var findAdsWithDomain = function (domain, context) {
-    if (!context) {
-        context = $('html');
+var findAdsWithDomain = function (domain, iframe) {
+    var $dom = $('html');
+    if (iframe) {
+        $dom = $(iframe).contents();
     }
-    return context.find('embed,iframe').filter(function (index, item) {
+    return $dom.find('embed,iframe').filter(function (index, item) {
         var src = $(item).attr('src');
         return src && src.indexOf(domain) > -1 && src.indexOf(domain) < 9;
     });
@@ -46,36 +48,44 @@ var findAdsWithDomain = function (domain, context) {
 var openAds = function (href) {
     var $iframe = $('<iframe height=0 width=0 />');
     $('body').append($iframe);
+    $iframe.on('load', function (e) {
+        $(this).remove();
+    });
     $iframe.get(0).src = href;
 };
 
 var openIframeAds = function (src) {
     var $iframe = $('<iframe height=0 width=0 />');
     $('body').append($iframe);
+    var args = arguments;
     $iframe.on('load', function (e) {
-        var $html = $(this).contents();
-        var arg = [];
-        for (var i = 1; i < arguments.length; i ++) {
-            arg.push(arguments[i]);
+        var params = [];
+        for (var i = 1; i < args.length; i ++) {
+            params.push(args[i]);
         }
-        autoOpenAds.apply(arg.concat($html));
+        autoOpenAds.apply(null, params.concat(this));
     });
     $iframe.get(0).src = '/PHPProxy/phpproxy.php?url=' + src;
 };
 
-var autoOpenAds = function (width, height, context) {
-    var $ads = findAdsWithSize(width, height, context);
+var autoOpenAds = function (width, height, iframe) {
+    var $ads = findAdsWithSize(width, height, iframe);
 
     if ($ads.length < 1) {
         return false;
     }
 
     if ($ads.get(0).tagName === 'IFRAME') {
-        openIframeAds($ads.attr('src'), width, height);
-        if ($ads.parent().get(0).tagName === 'BODY') {
-            $ads.remove();
+        var src = $ads.attr('src');
+        if (!src || (src.indexOf(location.host) > -1 && src.indexOf(location.host) < 9)) {
+            autoOpenAds(width, height, $ads.get(0));
         } else {
-            $ads.parent().remove();
+            openIframeAds(src, width, height);
+            if ($ads.parent().get(0).tagName === 'BODY') {
+                $ads.remove();
+            } else {
+                $ads.parent().remove();
+            }
         }
     } else {
         var $a = $img.siblings('a');
