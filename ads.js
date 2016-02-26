@@ -29,7 +29,7 @@ var findAdsWithSize = function (width, height, iframe) {
     if (iframe) {
         $dom = $(iframe).contents();
     }
-    return $dom.find('img,embed,iframe,object').filter(function (index, item) {
+    return $dom.find('a,img,embed,iframe,object').filter(function (index, item) {
         return $(item).width() == width && $(item).height() == height;
     });
 };
@@ -49,7 +49,7 @@ var openAds = function (href) {
     var $iframe = $('<iframe height=0 width=0 />');
     $('body').append($iframe);
     $iframe.on('load', function (e) {
-        $(this).remove();
+        // $(this).remove();
     });
     $iframe.get(0).src = href;
 };
@@ -146,7 +146,7 @@ var autoOpenDomainAds = function (domain, width, height, iframe) {
 // }, 1000);
 
 // setTimeout(function () {
-//     if (!autoOpenDomainAds('changyan.sohu.com')) {
+//     if (!autoOpenDomainAds('changyan.sohu.com', 728, 90)) {
 //         setTimeout(arguments.callee, 1000);
 //     }
 // }, 1000);
