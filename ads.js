@@ -145,10 +145,31 @@ var autoOpenDomainAds = function (domain, width, height, iframe) {
 };
 
 setTimeout(function () {
-    autoOpenAds(300, 250);
-    autoOpenAds(728, 90);
-    autoOpenDomainAds('changyan.sohu.com', 728, 90);
-    setTimeout(function () {
-        $('.iframe-ads').remove();
-    }, 10000);
+    if (autoOpenAds(300, 250)) {
+        setTimeout(function () {
+            $('.iframe-ads').remove();
+        }, 10000);
+    } else {
+        setTimeout(arguments.callee, 10000);
+    }
+}, 10000);
+
+setTimeout(function () {
+    if (autoOpenAds(728, 90)) {
+        setTimeout(function () {
+            $('.iframe-ads').remove();
+        }, 10000);
+    } else {
+        setTimeout(arguments.callee, 10000);
+    }
+}, 10000);
+
+setTimeout(function () {
+    if (autoOpenDomainAds('changyan.sohu.com', 728, 90)) {
+        setTimeout(function () {
+            $('.iframe-ads').remove();
+        }, 10000);
+    } else {
+        setTimeout(arguments.callee, 10000);
+    }
 }, 10000);
