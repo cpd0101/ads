@@ -24,6 +24,8 @@ var isNotUrl = function (str) {
     return false;
 };
 
+var map = {};
+
 var findAdsWithSize = function (width, height, iframe) {
     var $dom = $('html');
     if (iframe) {
@@ -49,8 +51,15 @@ var openAds = function (href, width, height) {
     var $iframe = $('<iframe height=0 width=0 />');
     $('body').append($iframe);
     $iframe.on('load', function (e) {
-        $('.iframe-ads-' + width + '-' + height).remove();
         $(this).remove();
+        $('.iframe-ads-' + width + '-' + height).remove();
+        if (map[width + '*' + height]) {
+            var arr = map[width + '*' + height];
+            for (var i = 0; i < arr.length; i++) {
+                arr[i].remove();
+            }
+            map[width + '*' + height] = [];
+        }
     });
     $iframe.get(0).src = href;
 };
@@ -77,10 +86,10 @@ var autoOpenAds = function (width, height, iframe) {
             autoOpenAds(width, height, $ads.get(0));
         } else {
             openIframeAds(src, width, height);
-            if ($ads.parent().get(0).tagName === 'BODY') {
-                $ads.remove();
+            if (map[width + '*' + height]) {
+                map[width + '*' + height].push($ads);
             } else {
-                $ads.parent().remove();
+                map[width + '*' + height] = [$ads];
             }
         }
     } else {
@@ -111,10 +120,10 @@ var autoOpenAds = function (width, height, iframe) {
             openAds($a.attr('href'), width, height);
         }
 
-        if ($a.parent().get(0).tagName === 'BODY') {
-            $a.remove();
+        if (map[width + '*' + height]) {
+            map[width + '*' + height].push($a);
         } else {
-            $a.parent().remove();
+            map[width + '*' + height] = [$a];
         }
     }
 
@@ -132,10 +141,10 @@ var autoOpenDomainAds = function (domain, width, height, iframe) {
         var $item = $(item);
         var src = $item.attr('src');
         openIframeAds(src, width, height);
-        if ($item.parent().get(0).tagName === 'BODY') {
-            $item.remove();
+        if (map[width + '*' + height]) {
+            map[width + '*' + height].push($item);
         } else {
-            $item.parent().remove();
+            map[width + '*' + height] = [$item];
         }
     });
 
