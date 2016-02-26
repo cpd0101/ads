@@ -98,13 +98,13 @@ var autoOpenAds = function (width, height, iframe) {
             // }
         }
     } else {
-        var $a;
+        var $a = null;
 
         if ($ads.get(0).tagName === 'A') {
             $a = $ads;
         }
 
-        if ($a.length === 0) {
+        if (!$a) {
             $a = $ads.siblings('a');
         }
 
