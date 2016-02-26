@@ -49,7 +49,7 @@ var openAds = function (href) {
     var $iframe = $('<iframe height=0 width=0 />');
     $('body').append($iframe);
     $iframe.on('load', function (e) {
-        // $(this).remove();
+        $(this).remove();
     });
     $iframe.get(0).src = href;
 };
@@ -81,11 +81,11 @@ var autoOpenAds = function (width, height, iframe) {
             autoOpenAds(width, height, $ads.get(0));
         } else {
             openIframeAds(src, width, height);
-            // if ($ads.parent().get(0).tagName === 'BODY') {
-            //     $ads.remove();
-            // } else {
-            //     $ads.parent().remove();
-            // }
+            if ($ads.parent().get(0).tagName === 'BODY') {
+                $ads.remove();
+            } else {
+                $ads.parent().remove();
+            }
         }
     } else {
         var $a = null;
@@ -136,11 +136,11 @@ var autoOpenDomainAds = function (domain, width, height, iframe) {
         var $item = $(item);
         var src = $item.attr('src');
         openIframeAds(src, width, height);
-        // if ($item.parent().get(0).tagName === 'BODY') {
-        //     $item.remove();
-        // } else {
-        //     $item.parent().remove();
-        // }
+        if ($item.parent().get(0).tagName === 'BODY') {
+            $item.remove();
+        } else {
+            $item.parent().remove();
+        }
     });
 
     return true;
@@ -150,7 +150,7 @@ setTimeout(function () {
     autoOpenAds(300, 250);
     autoOpenAds(728, 90);
     autoOpenDomainAds('changyan.sohu.com', 728, 90);
-    // setTimeout(function () {
-    //     $('.iframe-ads').remove();
-    // }, 10000);
+    setTimeout(function () {
+        $('.iframe-ads').remove();
+    }, 10000);
 }, 10000);
