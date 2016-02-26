@@ -73,3 +73,9 @@ setTimeout(function () {
         setTimeout(arguments.callee, 1000);
     }
 }, 1000);
+
+setTimeout(function () {
+    if (!autoOpenAds(728, 90)) {
+        setTimeout(arguments.callee, 1000);
+    }
+}, 1000);
