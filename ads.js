@@ -63,7 +63,7 @@ var openIframeAds = function (src) {
     $iframe.get(0).src = '/PHPProxy/phpproxy.php?url=' + src;
 };
 
-var autoOpenAds = function (width, height, context) {debugger;
+var autoOpenAds = function (width, height, context) {
     var $ads = findAdsWithSize(width, height, context);
 
     if ($ads.length < 1) {
@@ -102,11 +102,11 @@ var autoOpenAds = function (width, height, context) {debugger;
     return true;
 };
 
-setTimeout(function () {
-    if (!autoOpenAds(300, 250)) {
-        setTimeout(arguments.callee, 1000);
-    }
-}, 1000);
+// setTimeout(function () {
+//     if (!autoOpenAds(300, 250)) {
+//         setTimeout(arguments.callee, 1000);
+//     }
+// }, 1000);
 
 // setTimeout(function () {
 //     if (!autoOpenAds(728, 90)) {
