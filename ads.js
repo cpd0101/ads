@@ -15,6 +15,8 @@ var triggerEvent = function (dom, type) {
 
     // 触发
     dom.dispatchEvent(evt);
+
+    $(dom).trigger(type);
 };
 
 var isNotUrl = function (str) {
