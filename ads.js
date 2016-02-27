@@ -16,8 +16,8 @@
         $(dom).trigger(type);
     };
 
-    var isNotUrl = function (str) {
-        if (!str || str.indexOf('javascript:') === 0) {
+    var isUrl = function (str) {
+        if (str && str.indexOf('http') === 0) {
             return true;
         }
         return false;
@@ -48,8 +48,9 @@
         return $dom.find('iframe').filter(function (index, item) {
             var $item = $(item);
             var src = $(item).attr('src');
-            if (src && src.indexOf(domain) > -1 && src.indexOf(domain) < 9) {
-                if ($item.width() == width && $item.height() == height) {
+            if (src) {
+                src = src.replace(/^(http|https)\:\/\//gi, '');
+                if (src.indexOf(domain) === 0 && $item.width() == width && $item.height() == height) {
                     return true;
                 }
             }
@@ -91,30 +92,19 @@
         $iframe.get(0).src = '/PHPProxy/phpproxy.php?url=' + encodeURIComponent(src);
     };
 
-    var autoOpenAds = function (width, height, iframe) {
-        var iOpen = null;
-        if (iframe && iframe.contentWindow) {
-            iOpen = iframe.contentWindow.open;
-            iframe.contentWindow.open = openAds;
-        }
-
-        var $ads = findAdsWithSize(width, height, iframe);
-
-        if ($ads.length < 1) {
-            return false;
-        }
-
+    var handleAds = function (item, width, height) {
+        var $ads = $(item);
         if ($ads.get(0).tagName === 'IFRAME') {
             var src = $ads.attr('src');
-            if (!src || (src.indexOf(location.host) > -1 && src.indexOf(location.host) < 9)) {
-                autoOpenAds(width, height, $ads.get(0));
-            } else {
+            if (src && src.indexOf('http') === 0) {
                 openIframeAds(src, width, height);
                 if (map[width + '*' + height]) {
                     map[width + '*' + height].push($ads);
                 } else {
                     map[width + '*' + height] = [$ads];
                 }
+            } else {
+                autoOpenAds(width, height, $ads.get(0));
             }
         } else {
             var $a = null;
@@ -140,13 +130,13 @@
                 height: height
             };
 
-            if (isNotUrl($a.attr('href'))) {
+            if (isUrl($a.attr('href'))) {
+                openAds($a.attr('href'), width, height);
+            } else {
                 var wOpen = window.open;
                 window.open = openAds;
                 triggerEvent($a.get(0), 'click');
                 window.open = wOpen;
-            } else {
-                openAds($a.attr('href'), width, height);
             }
 
             if (map[width + '*' + height]) {
@@ -155,6 +145,24 @@
                 map[width + '*' + height] = [$a];
             }
         }
+    };
+
+    var autoOpenAds = function (width, height, iframe) {
+        var iOpen = null;
+        if (iframe && iframe.contentWindow) {
+            iOpen = iframe.contentWindow.open;
+            iframe.contentWindow.open = openAds;
+        }
+
+        var $ads = findAdsWithSize(width, height, iframe);
+
+        if ($ads.length < 1) {
+            return false;
+        }
+
+        $ads.each(function (index, item) {
+            handleAds(item, width, height);
+        });
 
         if (iframe && iframe.contentWindow) {
             iframe.contentWindow.open = iOpen;
@@ -170,13 +178,16 @@
             return false;
         }
 
-        var src = $ads.attr('src');
-        openIframeAds(src, width, height);
-        if (map[width + '*' + height]) {
-            map[width + '*' + height].push($ads);
-        } else {
-            map[width + '*' + height] = [$ads];
-        }
+        $ads.each(function (index, item) {
+            var $item = $(item);
+            var src = $item.attr('src');
+            openIframeAds(src, width, height);
+            if (map[width + '*' + height]) {
+                map[width + '*' + height].push($item);
+            } else {
+                map[width + '*' + height] = [$item];
+            }
+        });
 
         return true;
     };
@@ -184,7 +195,7 @@
     setTimeout(function () {
         autoOpenAds(300, 250);
         autoOpenAds(728, 90);
-        autoOpenDomainAds('changyan.sohu.com', 650, 320, 728, 90);
+        autoOpenDomainAds('changyan.sohu.com', 650, 90, 728, 90);
     }, 10000);
 
 })();
