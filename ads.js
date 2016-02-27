@@ -195,7 +195,7 @@
     setTimeout(function () {
         autoOpenAds(300, 250);
         autoOpenAds(728, 90);
-        autoOpenDomainAds('changyan.sohu.com', 650, 90, 728, 90);
+        autoOpenDomainAds('changyan.sohu.com', 650, 320, 728, 90);
     }, 10000);
 
 })();
