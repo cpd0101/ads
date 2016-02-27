@@ -179,14 +179,7 @@
         }
 
         $ads.each(function (index, item) {
-            var $item = $(item);
-            var src = $item.attr('src');
-            openIframeAds(src, width, height);
-            if (map[width + '*' + height]) {
-                map[width + '*' + height].push($item);
-            } else {
-                map[width + '*' + height] = [$item];
-            }
+            handleAds(item, width, height);
         });
 
         return true;
