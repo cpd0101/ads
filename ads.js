@@ -33,7 +33,11 @@ var findAdsWithSize = function (width, height, iframe) {
         $dom = $(iframe).contents();
     }
     return $dom.find('a#res0,img,iframe,embed,object').filter(function (index, item) {
-        return $(item).width() == width && $(item).height() == height;
+        var $item = $(item);
+        if ($item.width() == width && $item.height() == height) {
+            return true;
+        }
+        return false;
     });
 };
 
@@ -43,14 +47,19 @@ var findAdsWithDomain = function (domain, width, height, iframe) {
         $dom = $(iframe).contents();
     }
     return $dom.find('iframe').filter(function (index, item) {
+        var $item = $(item);
         var src = $(item).attr('src');
-        return src && src.indexOf(domain) > -1 && src.indexOf(domain) < 9
-            && $(item).width() == width && $(item).height() == height;
+        if (src && src.indexOf(domain) > -1 && src.indexOf(domain) < 9) {
+            if ($item.width() == width && $item.height() == height) {
+                return true;
+            }
+        }
+        return false;
     });
 };
 
 var openAds = function (href, width, height) {
-    if (!width || !height) {
+    if (width == undefined || height == undefined) {
         width = rect.width;
         height = rect.height;
     }
@@ -84,6 +93,12 @@ var openIframeAds = function (src, width, height) {
 };
 
 var autoOpenAds = function (width, height, iframe) {
+    var iOpen = null;
+    if (iframe && iframe.contentWindow) {
+        iOpen = iframe.contentWindow.open;
+        iframe.contentWindow.open = openAds;
+    }
+
     var $ads = findAdsWithSize(width, height, iframe);
 
     if ($ads.length < 1) {
@@ -140,6 +155,10 @@ var autoOpenAds = function (width, height, iframe) {
         } else {
             map[width + '*' + height] = [$a];
         }
+    }
+
+    if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.open = iOpen;
     }
 
     return true;
